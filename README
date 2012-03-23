@@ -1,9 +1,13 @@
 TSAL is a C++ wrapper for OpenAL attempting to fix it's many issues, adding an 
 additional level of abstraction and bundling ogg file support.
 
-To build for Linux just run:
+To build for 32bit Linux just run:
 
 	make
+	
+To build for 64bit Linux:
+
+	make linux64
 	
 To cross-compile using MinGW run:
 

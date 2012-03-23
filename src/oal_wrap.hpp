@@ -2,6 +2,8 @@
 #include <string>
 #include <cstdio>
 
+std::string ErrStr(ALenum err);
+
 void alwListenerfv(ALenum param, ALfloat *values);
 
 void alwDistanceModel(ALenum value);

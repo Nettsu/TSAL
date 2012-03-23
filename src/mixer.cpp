@@ -42,11 +42,11 @@ TSAL_Source* TSAL_Mixer::create_source(string n, bool l)
 	return new TSAL_Source(this, n, l);
 }
 
-ALuint TSAL_Mixer::get_source(float x, float y, float z)
+int TSAL_Mixer::get_source(float x, float y, float z)
 {
 	float max_dist = 0;
 	float temp_dist = 0;
-	ALuint best_candidate = 0;
+	int best_candidate = 0;
 	float pos[3];
 	int val;
 	for (int i = 0; i < TSAL_NUM_SOURCES; i++)
@@ -200,7 +200,7 @@ void TSAL_Mixer::play_global(string name, float loudness, float pitch)
 	alwSourcef(current, AL_PITCH, pitch);
 	alwSourcef(current, AL_GAIN, loudness*global_volume);
 	alwSource3f(current, AL_POSITION, listenerPos[0], listenerPos[1], 0);
-	alwSourcei(current, AL_BUFFER, snd->second);
+	alwSourcei(current, AL_BUFFER, (ALint)(snd->second));
 	alwSourcef(current, AL_REFERENCE_DISTANCE, 1000);
 	alwSourcei(current, AL_LOOPING, AL_FALSE);
 	alwSourcePlay(current);
@@ -224,7 +224,7 @@ void TSAL_Mixer::play_sound(string name, float x, float y, float z, float loudne
 	alwSourcef(current, AL_GAIN, loudness*global_volume);
 	alwSource3f(current, AL_POSITION, x, y, z);
 	alwSource3f(current, AL_VELOCITY, 0, 0, 0);
-	alwSourcei(current, AL_BUFFER, snd->second);
+	alwSourcei(current, AL_BUFFER, (ALint)(snd->second));
 	alwSourcei(current, AL_LOOPING, AL_FALSE);
 	alwSourcef(current, AL_REFERENCE_DISTANCE, TSAL_REF_DIST);
 	alwSourcef(current, AL_ROLLOFF_FACTOR, falloff*TSAL_FALLOFF_MULT);

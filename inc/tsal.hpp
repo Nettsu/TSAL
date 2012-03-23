@@ -61,7 +61,7 @@ class TSAL_Mixer
 		ALCdevice* device;
 		ALCcontext* context;
 		
-		ALuint get_source(float x, float y, float z);
+		int get_source(float x, float y, float z);
 		TSAL_Mixer();
 		static TSAL_Mixer* instance;
 		

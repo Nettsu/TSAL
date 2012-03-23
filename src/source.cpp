@@ -128,7 +128,7 @@ void TSAL_Source::manage()
 		map<string,ALuint>::iterator snd = mixer->sounds.find(name);
 		if (snd == mixer->sounds.end()) return;
 	
-		alwSourcei(source_id, AL_BUFFER, snd->second);
+		alwSourcei(source_id, AL_BUFFER, (ALint)(snd->second));
 	}
 	
 	alwSourcefv(source_id, AL_POSITION, pos);
