@@ -15,7 +15,7 @@ being linked (ogg, vorbis and vorbisfile).
 
 Directories:
 
-./deps				Contains the libraries that are statically linked into the binary
-./inc					Library API headers
-./lib					Contains the TSAL library in binary form
-./src					The source files for TSAL
+./deps		Contains the libraries that are statically linked
+./inc			Library API headers
+./lib			Contains the TSAL library in binary form
+./src			The source files for TSAL
