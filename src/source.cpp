@@ -39,6 +39,8 @@ TSAL_Source::TSAL_Source(TSAL_Mixer* mix)
 
 TSAL_Source::TSAL_Source(TSAL_Mixer* mix, string n, bool l)
 {
+	pos[0] = pos[1] = pos[2] = 0;
+	vel[0] = vel[1] = vel[2] = 0;
 	name = n;
 	loudness = 1;
 	pitch = 1;
