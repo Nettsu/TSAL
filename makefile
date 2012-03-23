@@ -1,15 +1,15 @@
 CC = g++
 CCWIN = i486-mingw32-g++
 
-CFLAGS = -O2 -Wall -c -fPIC -I. -I./deps/inc -I./inc
-CFLAGSWIN = -O2 -Wall -c -DBUILDING_EXAMPLE_DLL -I. -I./deps/inc -I./inc
+CFLAGS = -O2 -Wall -c -fPIC -I. -I./dep/inc -I./inc
+CFLAGSWIN = -O2 -Wall -c -DBUILDING_EXAMPLE_DLL -I. -I./dep/inc -I./inc
 
 DBGFLAGS = -g
 
-LDFLAGS = -O2 -L./deps/linux -lopenal -Wl,-soname,libtsal.so.0,--whole-archive \
+LDFLAGS = -O2 -L./dep/linux -lopenal -Wl,-soname,libtsal.so.0,--whole-archive \
 -logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
 
-LDFLAGSWIN = -O2 -L./deps/win32 -static-libgcc -static-libstdc++ -lsoft_oal -Wl,--whole-archive \
+LDFLAGSWIN = -O2 -L./dep/win32 -static-libgcc -static-libstdc++ -lsoft_oal -Wl,--whole-archive \
 -logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
 
 SOURCES = src/source.cpp src/mixer.cpp src/oal_wrap.cpp
