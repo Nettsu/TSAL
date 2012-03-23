@@ -51,7 +51,7 @@ ALuint TSAL_Mixer::get_source(float x, float y, float z)
 	int val;
 	for (int i = 0; i < TSAL_NUM_SOURCES; i++)
 	{
-		alGetSourcei(TSAL_Mixer::source[i], AL_SOURCE_STATE, &val);
+		alwGetSourcei(TSAL_Mixer::source[i], AL_SOURCE_STATE, &val);
 		if (val != AL_PLAYING)
 		{
 			if (TSAL_Mixer::reserved_sources[i] != NULL)
@@ -61,7 +61,7 @@ ALuint TSAL_Mixer::get_source(float x, float y, float z)
 			}
 			return i;
 		}
-		alGetSourcefv(source[i], AL_POSITION, &pos[0]);
+		alwGetSourcefv(source[i], AL_POSITION, &pos[0]);
 		temp_dist = (listenerPos[0] - pos[0])*(listenerPos[0] - pos[0]);
 		temp_dist += (listenerPos[1] - pos[1])*(listenerPos[1] - pos[1]);
 		temp_dist += (listenerPos[2] - pos[2])*(listenerPos[2] - pos[2]);
@@ -82,7 +82,7 @@ ALuint TSAL_Mixer::get_source(float x, float y, float z)
 		TSAL_Mixer::reserved_sources[best_candidate]->take_id();
 		TSAL_Mixer::reserved_sources[best_candidate] = NULL;
 	}
-	alSourceStop(TSAL_Mixer::source[best_candidate]);
+	alwSourceStop(TSAL_Mixer::source[best_candidate]);
 	return best_candidate;
 }
 
@@ -93,18 +93,18 @@ void TSAL_Mixer::init_sfx()
 	context = alcCreateContext(device, NULL);
 	alcMakeContextCurrent(context);
 
-	alListenerfv(AL_POSITION,listenerPos);
-	alListenerfv(AL_VELOCITY,listenerVel);
-	alListenerfv(AL_ORIENTATION,listenerOri);
-	alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
-	alGenSources(TSAL_NUM_SOURCES, source);
+	alwListenerfv(AL_POSITION,listenerPos);
+	alwListenerfv(AL_VELOCITY,listenerVel);
+	alwListenerfv(AL_ORIENTATION,listenerOri);
+	alwDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
+	alwGenSources(TSAL_NUM_SOURCES, source);
 	for (int i = 0; i < TSAL_NUM_SOURCES; i++)
 		reserved_sources[i] = NULL;
 }
 
 void TSAL_Mixer::stop_sfx()
 {	
-	alDeleteSources(TSAL_NUM_SOURCES, source);
+	alwDeleteSources(TSAL_NUM_SOURCES, source);
 	alcDestroyContext(context);
 	alcCloseDevice(device);
 }
@@ -115,7 +115,7 @@ void TSAL_Mixer::listener_pos(float pos_x, float pos_y, float pos_z)
 	listenerPos[1] = pos_y;
 	listenerPos[2] = pos_z;
 
-	alListenerfv(AL_POSITION,listenerPos);
+	alwListenerfv(AL_POSITION,listenerPos);
 }
 
 void TSAL_Mixer::listener_vel(float vel_x, float vel_y, float vel_z)
@@ -123,6 +123,8 @@ void TSAL_Mixer::listener_vel(float vel_x, float vel_y, float vel_z)
 	listenerVel[0] = vel_x;
 	listenerVel[1] = vel_y;
 	listenerVel[2] = vel_z;
+	
+	alwListenerfv(AL_VELOCITY,listenerVel);
 }
 
 void TSAL_Mixer::listener_facing(float front_x, float front_y, float front_z, float up_x, float up_y, float up_z)
@@ -134,7 +136,7 @@ void TSAL_Mixer::listener_facing(float front_x, float front_y, float front_z, fl
 	listenerOri[4] = up_y;
 	listenerOri[5] = up_z;
 
-	alListenerfv(AL_ORIENTATION,listenerOri);
+	alwListenerfv(AL_ORIENTATION,listenerOri);
 }
 
 void TSAL_Mixer::load_sound(string file, string name)
@@ -175,7 +177,7 @@ void TSAL_Mixer::load_sound(string file, string name)
   }
   while (bytes > 0);
 
-	alBufferData(buffer, format, &bufferData[0], static_cast < ALsizei > (bufferData.size()), pInfo->rate);
+	alwBufferData(buffer, format, &bufferData[0], static_cast < ALsizei > (bufferData.size()), pInfo->rate);
 	
 	ov_clear(&oggFile);
 	sounds.insert( pair<string,ALuint> (name, buffer) );
@@ -195,13 +197,13 @@ void TSAL_Mixer::play_global(string name, float loudness, float pitch)
 		return;
 	}
 	
-	alSourcef(current, AL_PITCH, pitch);
-	alSourcef(current, AL_GAIN, loudness*global_volume);
-	alSource3f(current, AL_POSITION, listenerPos[0], listenerPos[1], 0);
-	alSourcei(current, AL_BUFFER, snd->second);
-	alSourcef(current, AL_REFERENCE_DISTANCE, 1000);
-	alSourcei(current, AL_LOOPING, AL_FALSE);
-	alSourcePlay(current);
+	alwSourcef(current, AL_PITCH, pitch);
+	alwSourcef(current, AL_GAIN, loudness*global_volume);
+	alwSource3f(current, AL_POSITION, listenerPos[0], listenerPos[1], 0);
+	alwSourcei(current, AL_BUFFER, snd->second);
+	alwSourcef(current, AL_REFERENCE_DISTANCE, 1000);
+	alwSourcei(current, AL_LOOPING, AL_FALSE);
+	alwSourcePlay(current);
 }
 
 void TSAL_Mixer::play_sound(string name, float x, float y, float z, float loudness, float pitch, float falloff)
@@ -218,15 +220,15 @@ void TSAL_Mixer::play_sound(string name, float x, float y, float z, float loudne
 		return;
 	}
 	
-	alSourcef(current, AL_PITCH, pitch);
-	alSourcef(current, AL_GAIN, loudness*global_volume);
-	alSource3f(current, AL_POSITION, x, y, z);
-	alSource3f(current, AL_VELOCITY, 0, 0, 0);
-	alSourcei(current, AL_BUFFER, snd->second);
-	alSourcei(current, AL_LOOPING, AL_FALSE);
-	alSourcef(current, AL_REFERENCE_DISTANCE, TSAL_REF_DIST);
-	alSourcef(current, AL_ROLLOFF_FACTOR, falloff*TSAL_FALLOFF_MULT);
-	alSourcePlay(current);
+	alwSourcef(current, AL_PITCH, pitch);
+	alwSourcef(current, AL_GAIN, loudness*global_volume);
+	alwSource3f(current, AL_POSITION, x, y, z);
+	alwSource3f(current, AL_VELOCITY, 0, 0, 0);
+	alwSourcei(current, AL_BUFFER, snd->second);
+	alwSourcei(current, AL_LOOPING, AL_FALSE);
+	alwSourcef(current, AL_REFERENCE_DISTANCE, TSAL_REF_DIST);
+	alwSourcef(current, AL_ROLLOFF_FACTOR, falloff*TSAL_FALLOFF_MULT);
+	alwSourcePlay(current);
 }
 
 void TSAL_Mixer::manage_sources()
