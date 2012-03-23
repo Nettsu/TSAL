@@ -2,6 +2,8 @@
 #include "tsal.hpp"
 #include "oal_wrap.hpp"
 
+using namespace std;
+
 TSAL_Source::~TSAL_Source()
 {
 	for (int i = 0; i < TSAL_NUM_SOURCES; i++)

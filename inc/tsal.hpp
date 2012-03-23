@@ -9,8 +9,6 @@
 #define TSAL_REF_DIST 20
 #define TSAL_FALLOFF_MULT 2
 
-using namespace std;
-
 class TSAL_Mixer;
 
 class TSAL_Source
@@ -18,7 +16,7 @@ class TSAL_Source
 	private:
 		ALfloat pos[3];
 		ALfloat vel[3];
-		string name;
+		std::string name;
 		ALuint source_id;
 		float loudness;
 		float pitch;
@@ -31,7 +29,7 @@ class TSAL_Source
 		TSAL_Mixer* mixer;
 		
 		TSAL_Source(TSAL_Mixer* mix);
-		TSAL_Source(TSAL_Mixer* mix, string n, bool l);
+		TSAL_Source(TSAL_Mixer* mix, std::string n, bool l);
 		void manage();
 		void take_id();
 
@@ -42,9 +40,9 @@ class TSAL_Source
 		void update(float p, float loud, bool l);
 		void set_pos(float pos_x, float pos_y, float pos_z);
 		void set_vel(float vel_x, float vel_y, float vel_z);
-		void change_sample(string n);
+		void change_sample(std::string n);
 		bool is_playing();
-		string sample();
+		std::string sample();
 		
 	friend class TSAL_Mixer;
 };
@@ -52,11 +50,11 @@ class TSAL_Source
 class TSAL_Mixer
 {
 	private:
-		map <string, ALuint> sounds;
+		std::map <std::string, ALuint> sounds;
 		ALfloat listenerPos[3];
 		ALfloat listenerVel[3];
 		ALfloat listenerOri[6];
-		list<TSAL_Source*> csources;
+		std::list<TSAL_Source*> csources;
 		ALuint source[TSAL_NUM_SOURCES];
 		TSAL_Source* reserved_sources[TSAL_NUM_SOURCES];
 		float global_volume;
@@ -71,16 +69,16 @@ class TSAL_Mixer
 		static TSAL_Mixer* get_mixer();
 		void init_sfx();
 		void stop_sfx();
-		void load_sound(string file, string name);
-		void play_global(string name, float loudness = 1, float pitch = 1);
-		void play_sound(string name, float x, float y, float z = 0, float loudness = 1, float pitch = 1, float falloff = 1);
+		void load_sound(std::string file, std::string name);
+		void play_global(std::string name, float loudness = 1, float pitch = 1);
+		void play_sound(std::string name, float x, float y, float z = 0, float loudness = 1, float pitch = 1, float falloff = 1);
 		void listener_pos(float pos_x, float pos_y, float pos_z);
 		void listener_vel(float vel_x, float vel_y, float vel_z);
 		void listener_facing(float front_x, float front_y, float front_z, float up_x, float up_y, float up_z);
 		void manage_sources();
 		void set_volume(float v);
 		TSAL_Source* create_source();
-		TSAL_Source* create_source(string n, bool l);
+		TSAL_Source* create_source(std::string n, bool l);
 		
 	friend class TSAL_Source;
 };

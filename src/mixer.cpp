@@ -7,6 +7,8 @@
 
 #define BUFFER_SIZE 32768     // 32 KB buffers
 
+using namespace std;
+
 TSAL_Mixer* TSAL_Mixer::instance = NULL;  
   
 TSAL_Mixer* TSAL_Mixer::get_mixer()
