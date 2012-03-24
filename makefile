@@ -26,8 +26,8 @@ NODIRSOURCES = $(notdir $(SOURCES))
 OBJECTS_LIN = $(patsubst %.cpp, src/%.o, $(NODIRSOURCES))
 OBJECTS_WIN = $(patsubst %.cpp, src/%.win.o, $(NODIRSOURCES))
 
-EXECUTABLE_LIN = lib/libtsal.so.0
-EXECUTABLE_WIN = lib/libtsal.dll
+EXECUTABLE_LIN = libtsal.so.0
+EXECUTABLE_WIN = libtsal.dll
 
 all: $(SOURCES) $(EXECUTABLE_LIN) 
 

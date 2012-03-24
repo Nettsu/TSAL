@@ -14,14 +14,10 @@ To compile using MinGW run:
 	make win32
 	
 You might need to modify the makefile when compiling with MinGW but then you
-should be able to cross-compile just fine. If you want to build on a 64bit
-Linux you need to substitute 64bit versions of the static libraries that are
-being linked (openal, ogg, vorbis and vorbisfile) into the dep/linux64 
-directory.
+should be able to cross-compile just fine.
 
 Directories:
 
 ./dep			Contains the libraries that are statically linked
 ./inc			Library API headers
-./lib			Contains the TSAL library in binary form
 ./src			The source files for TSAL
