@@ -1,51 +1,49 @@
-CC = g++
-CCWIN = i486-mingw32-g++
+CXX = g++
+CXX_WIN = i486-mingw32-g++
 
 CFLAGS = -O2 -Wall -c -fPIC -I. -I./dep/inc -I./inc
-CFLAGSWIN = -O2 -Wall -c -DBUILDING_EXAMPLE_DLL -I. -I./dep/inc -I./inc
+CFLAGS_WIN = -O2 -Wall -c -DBUILDING_EXAMPLE_DLL -I. -I./dep/inc -I./inc
+
+ARCH = 32
+
+LIBPATH = -L./dep/linux32
+ifeq "$(ARCH)" "64"
+LIBPATH = -L./dep/linux64
+endif
 
 DBGFLAGS = -g
 
-DEPDIR32 = -L./dep/linux32
-DEPDIR64 = -L./dep/linux64
-DEPDIRWIN = -L./dep/win32
+LDFLAGS = -O2 $(LIBPATH) -lrt -Wl,-soname,libtsal.so.0,--whole-archive \
+-lopenal -logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
 
-LDFLAGS = -O2 -lopenal -Wl,-soname,libtsal.so.0,--whole-archive \
--logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
+LDFLAGS_WIN = -O2 -L.dep/win32 -static-libgcc -static-libstdc++ -lsoft_oal \
+-Wl,--whole-archive -logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
 
-LDFLAGSWIN = -O2 -static-libgcc -static-libstdc++ -lsoft_oal -Wl,--whole-archive \
--logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
-
-SOURCES = src/source.cpp src/mixer.cpp src/oal_wrap.cpp
+SOURCES = src/source.cpp src/mixer.cpp src/oal_wrap.cpp 
 
 NODIRSOURCES = $(notdir $(SOURCES))
 
-OBJECTS = $(patsubst %.cpp, src/%.o, $(NODIRSOURCES))
-OBJECTSWIN = $(patsubst %.cpp, src/%.win.o, $(NODIRSOURCES))
+OBJECTS_LIN = $(patsubst %.cpp, src/%.o, $(NODIRSOURCES))
+OBJECTS_WIN = $(patsubst %.cpp, src/%.win.o, $(NODIRSOURCES))
 
-EXECUTABLE = lib/libtsal.so.0
-EXECUTABLEWIN = lib/libtsal.dll
+EXECUTABLE_LIN = lib/libtsal.so.0
+EXECUTABLE_WIN = lib/libtsal.dll
 
-all: $(SOURCES) $(EXECUTABLE) 
+all: $(SOURCES) $(EXECUTABLE_LIN) 
 
-win32 : $(SOURCES) $(EXECUTABLEWIN)
+win32 : $(SOURCES) $(EXECUTABLE_WIN)
 
-linux64: $(SOURCES) $(EXECUTABLE64)
+$(EXECUTABLE_LIN): $(OBJECTS_LIN)
+	$(CXX) $(LDFLAGS) $(DBGFLAGS) $(OBJECTS_LIN) -o $@
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(DEPDIR32) $(LDFLAGS) $(DBGFLAGS) $(OBJECTS) -o $@
-
-$(EXECUTABLE64): $(OBJECTS)
-	$(CC) $(DEPDIR64) $(LDFLAGS) $(DBGFLAGS) $(OBJECTS) -o $@
-
-$(EXECUTABLEWIN): $(OBJECTSWIN)
-	$(CCWIN) $(DEPDIRWIN) $(LDFLAGSWIN) $(DBGFLAGS) $(OBJECTSWIN) -o $@
+$(EXECUTABLE_WIN): $(OBJECTS_WIN)
+	$(CXX_WIN) $(LDFLAGS_WIN) $(DBGFLAGS) $(OBJECTS_WIN) -o $@
 
 src/%.o: src/%.cpp
-	$(CC) $(CFLAGS) $(DBGFLAGS) $< -o $@
+	$(CXX) $(CFLAGS) $(DBGFLAGS) $< -o $@
 
 src/%.win.o: src/%.cpp
-	$(CCWIN) $(CFLAGSWIN) $(DBGFLAGS) $< -o $@
+	$(CXX_WIN) $(CFLAGS_WIN) $(DBGFLAGS) $< -o $@
 
 clean:
-	$(RM) src/*.o
+	$(RM) src/*.o lib/*
