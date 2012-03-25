@@ -18,6 +18,7 @@ should be able to cross-compile just fine.
 
 Directories:
 
-./dep			Contains the libraries that are statically linked
-./inc			Library API headers
-./src			The source files for TSAL
+./dep         Contains the libraries that are statically linked
+./inc         Library API headers
+./src         The source files for TSAL
+./examples    Contains sources and a makefile for simple examples

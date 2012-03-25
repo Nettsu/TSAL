@@ -11,6 +11,7 @@ TSAL_Source::~TSAL_Source()
 		{
 			alwSourceStop(mixer->source[i]);
 			mixer->reserved_sources[i] = NULL;
+			break;
 		}
 	list<TSAL_Source*>::iterator iter;
 	for (iter = mixer->csources.begin(); iter != mixer->csources.end(); ++iter)

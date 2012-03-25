@@ -2,6 +2,7 @@
 #include <AL/alc.h>
 #include <string>
 #include <list>
+#include <map>
 
 #define TSAL_NUM_BUFFERS 128
 #define TSAL_NUM_SOURCES 16

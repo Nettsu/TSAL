@@ -14,10 +14,10 @@ endif
 DBGFLAGS = -g
 
 LDFLAGS = -O2 $(LIBPATH) -lrt -Wl,-soname,libtsal.so.0,--whole-archive \
--lopenal -logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
+-lopenal -logg -lvorbis -ldl -lvorbisfile -Wl,--no-whole-archive -shared
 
 LDFLAGS_WIN = -O2 -L.dep/win32 -static-libgcc -static-libstdc++ -lsoft_oal \
--Wl,--whole-archive -logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
+-Wl,--whole-archive -logg -ldl -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
 
 SOURCES = src/source.cpp src/mixer.cpp src/oal_wrap.cpp 
 
