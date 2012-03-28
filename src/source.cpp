@@ -30,10 +30,12 @@ TSAL_Source::TSAL_Source(TSAL_Mixer* mix)
 	loudness = 1;
 	pitch = 1;
 	falloff = 1;
+	offset = 0;
 	loop = false;
 	playing = false;
 	id_taken_away = true;
 	sample_changed = true;
+	offset_changed = false;
 	mixer = mix;
 	mixer->csources.push_back(this);
 }
@@ -99,6 +101,14 @@ void TSAL_Source::set_vel(float vel_x, float vel_y, float vel_z)
 	vel[2] = vel_z;
 }
 
+void TSAL_Source::set_offset(float off)
+{
+	offset = off;
+	if (offset < 0) offset = 0;
+	if (offset > 1) offset = 1;
+	offset_changed = true;
+}
+
 bool TSAL_Source::is_playing()
 {
 	return playing;
@@ -130,6 +140,19 @@ void TSAL_Source::manage()
 		if (snd == mixer->sounds.end()) return;
 	
 		alwSourcei(source_id, AL_BUFFER, (ALint)(snd->second));
+	}
+	
+	if (offset_changed == true)
+	{
+		alwSourceRewind(source_id);
+
+    ALint total = 0;
+    ALint buffer = 0;
+    alwGetSourcei(source_id, AL_BUFFER, &buffer);
+    alwGetBufferi(buffer, AL_SIZE, &total);
+    alwSourcei(source_id, AL_BYTE_OFFSET, total*offset);
+    
+    offset_changed = false;
 	}
 	
 	alwSourcefv(source_id, AL_POSITION, pos);

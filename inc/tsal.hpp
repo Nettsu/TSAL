@@ -22,10 +22,12 @@ class TSAL_Source
 		float loudness;
 		float pitch;
 		float falloff;
+		float offset;
 		bool loop;
 		bool id_taken_away;
 		bool sample_changed;
 		bool playing;
+		bool offset_changed;
 		int playbacks;
 		TSAL_Mixer* mixer;
 		
@@ -41,6 +43,7 @@ class TSAL_Source
 		void update(float p, float loud, bool l);
 		void set_pos(float pos_x, float pos_y, float pos_z = 0);
 		void set_vel(float vel_x, float vel_y, float vel_z = 0);
+		void set_offset(float off);
 		void change_sample(std::string n);
 		bool is_playing();
 		std::string sample();

@@ -1,4 +1,4 @@
-CXX = g++
+CXX = g++-4.3
 CXX_WIN = i486-mingw32-g++
 
 CFLAGS = -O2 -Wall -c -fPIC -I. -I./dep/inc -I./inc

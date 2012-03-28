@@ -187,3 +187,24 @@ void alwSourceStop(ALuint source)
 	if ((error = alGetError()) != AL_NO_ERROR)
 		printf("After alSourceStop %i : %s\n", source, ErrStr(error).c_str());
 }
+
+void alwSourceRewind(ALuint source)
+{
+	int error;
+	if ((error = alGetError()) != AL_NO_ERROR)
+		printf("Before alSourceRewind %i : %s\n", source, ErrStr(error).c_str());
+	alSourceRewind(source);
+	if ((error = alGetError()) != AL_NO_ERROR)
+		printf("After alSourceRewind %i : %s\n", source, ErrStr(error).c_str());
+}
+
+void alwGetBufferi(ALuint buffer, ALenum pname, ALint *value)
+{
+	int error;
+	if ((error = alGetError()) != AL_NO_ERROR)
+		printf("Before alGetBufferi %i : %s\n", pname, ErrStr(error).c_str());
+	alGetBufferi(buffer, pname, value);
+	if ((error = alGetError()) != AL_NO_ERROR)
+		printf("After alGetBufferi %i : %s\n", pname, ErrStr(error).c_str());
+}
+
