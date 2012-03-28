@@ -188,6 +188,16 @@ void alwSourceStop(ALuint source)
 		printf("After alSourceStop %i : %s\n", source, ErrStr(error).c_str());
 }
 
+void alwSourcePause(ALuint source)
+{
+	int error;
+	if ((error = alGetError()) != AL_NO_ERROR)
+		printf("Before alSourcePause %i : %s\n", source, ErrStr(error).c_str());
+	alSourcePause(source);
+	if ((error = alGetError()) != AL_NO_ERROR)
+		printf("After alSourcePause %i : %s\n", source, ErrStr(error).c_str());
+}
+
 void alwSourceRewind(ALuint source)
 {
 	int error;

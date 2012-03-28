@@ -28,6 +28,7 @@ class TSAL_Source
 		bool sample_changed;
 		bool playing;
 		bool offset_changed;
+		bool paused;
 		int playbacks;
 		TSAL_Mixer* mixer;
 		
@@ -40,6 +41,7 @@ class TSAL_Source
 		~TSAL_Source();
 		void start();
 		void stop();
+		void pause();
 		void update(float p, float loud, bool l);
 		void set_pos(float pos_x, float pos_y, float pos_z = 0);
 		void set_vel(float vel_x, float vel_y, float vel_z = 0);

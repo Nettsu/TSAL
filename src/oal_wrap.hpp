@@ -36,6 +36,8 @@ void alwSourcePlay(ALuint source);
 
 void alwSourceStop(ALuint source);
 
+void alwSourcePause(ALuint source);
+
 void alwSourceRewind(ALuint source);
 
 void alwGetBufferi(ALuint buffer, ALenum pname, ALint *value);

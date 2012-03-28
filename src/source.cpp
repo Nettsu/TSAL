@@ -33,6 +33,7 @@ TSAL_Source::TSAL_Source(TSAL_Mixer* mix)
 	offset = 0;
 	loop = false;
 	playing = false;
+	paused = false;
 	id_taken_away = true;
 	sample_changed = true;
 	offset_changed = false;
@@ -65,6 +66,12 @@ void TSAL_Source::start()
 void TSAL_Source::stop()
 {
 	playing = false;
+}
+
+void TSAL_Source::pause()
+{
+	if (playing == true)
+		paused = true;
 }
 
 string TSAL_Source::sample()
@@ -175,6 +182,11 @@ void TSAL_Source::manage()
 	else if (!playing && val == AL_PLAYING)
 	{
 		alwSourceStop(source_id);
+	}
+	
+	if (paused && playing)
+	{
+		alwSourcePause(source_id);
 	}
 }
 
