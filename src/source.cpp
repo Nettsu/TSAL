@@ -1,28 +1,14 @@
 #include <map>
 #include "tsal.hpp"
-#include "oal_wrap.hpp"
 
 using namespace std;
 
 TSAL_Source::~TSAL_Source()
 {
-	for (int i = 0; i < TSAL_NUM_SOURCES; i++)
-		if (mixer->reserved_sources[i] == this)
-		{
-			alwSourceStop(mixer->source[i]);
-			mixer->reserved_sources[i] = NULL;
-			break;
-		}
-	list<TSAL_Source*>::iterator iter;
-	for (iter = mixer->csources.begin(); iter != mixer->csources.end(); ++iter)
-		if (*iter == this) 
-		{
-			mixer->csources.erase(iter);
-			break;
-		}
+	TSAL_Mixer::get_mixer()->forget_source(this);
 }
 
-TSAL_Source::TSAL_Source(TSAL_Mixer* mix)
+TSAL_Source::TSAL_Source()
 {
 	pos[0] = pos[1] = pos[2] = 0;
 	vel[0] = vel[1] = vel[2] = 0;
@@ -37,11 +23,10 @@ TSAL_Source::TSAL_Source(TSAL_Mixer* mix)
 	id_taken_away = true;
 	sample_changed = true;
 	offset_changed = false;
-	mixer = mix;
-	mixer->csources.push_back(this);
+	TSAL_Mixer::get_mixer()->register_source(this);
 }
 
-TSAL_Source::TSAL_Source(TSAL_Mixer* mix, string n, bool l)
+TSAL_Source::TSAL_Source(string n, bool l)
 {
 	pos[0] = pos[1] = pos[2] = 0;
 	vel[0] = vel[1] = vel[2] = 0;
@@ -53,8 +38,8 @@ TSAL_Source::TSAL_Source(TSAL_Mixer* mix, string n, bool l)
 	playing = false;
 	id_taken_away = true;
 	sample_changed = true;
-	mixer = mix;
-	mixer->csources.push_back(this);
+	offset_changed = false;
+	TSAL_Mixer::get_mixer()->register_source(this);
 }
 
 void TSAL_Source::start()
@@ -119,75 +104,6 @@ void TSAL_Source::set_offset(float off)
 bool TSAL_Source::is_playing()
 {
 	return playing;
-}
-
-void TSAL_Source::manage()
-{
-	if (id_taken_away)
-	{
-		if (!playing) return;
-		int id_index = mixer->get_source(pos[0], pos[1], pos[2]);
-		if (id_index == -1) return;
-		else
-		{
-			id_taken_away = false;
-			sample_changed = true;
-			mixer->reserved_sources[id_index] = this;
-			source_id = mixer->source[id_index];
-		}
-	}
-	
-	if (sample_changed)
-	{
-		alwSourceStop(source_id);
-		
-		sample_changed = false;
-		
-		map<string,ALuint>::iterator snd = mixer->sounds.find(name);
-		if (snd == mixer->sounds.end()) return;
-	
-		alwSourcei(source_id, AL_BUFFER, (ALint)(snd->second));
-	}
-	
-	if (offset_changed == true)
-	{
-		alwSourceRewind(source_id);
-
-    ALint total = 0;
-    ALint buffer = 0;
-    alwGetSourcei(source_id, AL_BUFFER, &buffer);
-    alwGetBufferi(buffer, AL_SIZE, &total);
-    alwSourcei(source_id, AL_BYTE_OFFSET, total*offset);
-    
-    offset_changed = false;
-	}
-	
-	alwSourcefv(source_id, AL_POSITION, pos);
-	alwSourcefv(source_id, AL_VELOCITY, vel);
-	
-	alwSourcef(source_id, AL_PITCH, pitch);
-	alwSourcef(source_id, AL_GAIN, loudness*(mixer->global_volume));
-	alwSourcei(source_id, AL_LOOPING, loop);
-	alwSourcef(source_id, AL_REFERENCE_DISTANCE, TSAL_REF_DIST);
-	alwSourcef(source_id, AL_ROLLOFF_FACTOR, falloff*TSAL_FALLOFF_MULT);
-	
-	int val;
-	alwGetSourcei(source_id, AL_SOURCE_STATE, &val);
-	if (playing && val != AL_PLAYING)
-	{
-		if (!loop && playbacks > 0) return;
-		alwSourcePlay(source_id);
-		if (!loop) playbacks++;
-	}
-	else if (!playing && val == AL_PLAYING)
-	{
-		alwSourceStop(source_id);
-	}
-	
-	if (paused && playing)
-	{
-		alwSourcePause(source_id);
-	}
 }
 
 void TSAL_Source::take_id()
