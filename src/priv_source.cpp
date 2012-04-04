@@ -10,7 +10,7 @@ TSAL_Priv_Source::TSAL_Priv_Source()
 {
 	pos[0] = pos[1] = pos[2] = 0;
 	vel[0] = vel[1] = vel[2] = 0;
-	name = "";
+	sample = "";
 	loudness = 1;
 	pitch = 1;
 	falloff = 1;

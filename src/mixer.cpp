@@ -9,7 +9,7 @@
 
 using namespace std;
 
-TSAL_Mixer::~TSAL_Mixer()
+TSAL_Manager::~TSAL_Manager()
 {	
 	list<TSAL_Priv_Source*>::iterator iter;
 	for (iter = virtual_sources.begin(); iter != virtual_sources.end(); ++iter)
@@ -22,7 +22,7 @@ TSAL_Mixer::~TSAL_Mixer()
 	alcCloseDevice(device);
 }
 
-TSAL_Mixer::TSAL_Mixer()
+TSAL_Manager::TSAL_Manager()
 {
 	listenerPos[0] = 0;
 	listenerPos[1] = 0;
@@ -56,22 +56,22 @@ TSAL_Mixer::TSAL_Mixer()
 		reservations[i] = NULL;
 }
 
-void TSAL_Mixer::set_ref_dist(float d)
+void TSAL_Manager::set_ref_dist(float d)
 {
 	reference_dist = d;
 }
 
-void TSAL_Mixer::set_falloff(float f)
+void TSAL_Manager::set_falloff(float f)
 {
 	falloff_mult = f;
 }
 
-void TSAL_Mixer::set_volume(float v)
+void TSAL_Manager::set_volume(float v)
 {
 	global_volume = v;
 }
 
-int TSAL_Mixer::get_source(float x, float y, float z)
+int TSAL_Manager::get_source(float x, float y, float z)
 {
 	float max_dist = 0;
 	float temp_dist = 0;
@@ -116,7 +116,7 @@ int TSAL_Mixer::get_source(float x, float y, float z)
 	return best_candidate;
 }
 
-void TSAL_Mixer::listener_pos(float pos_x, float pos_y, float pos_z)
+void TSAL_Manager::listener_pos(float pos_x, float pos_y, float pos_z)
 {
 	listenerPos[0] = pos_x;
 	listenerPos[1] = pos_y;
@@ -125,7 +125,7 @@ void TSAL_Mixer::listener_pos(float pos_x, float pos_y, float pos_z)
 	alwListenerfv(AL_POSITION,listenerPos);
 }
 
-void TSAL_Mixer::listener_vel(float vel_x, float vel_y, float vel_z)
+void TSAL_Manager::listener_vel(float vel_x, float vel_y, float vel_z)
 {
 	listenerVel[0] = vel_x;
 	listenerVel[1] = vel_y;
@@ -134,7 +134,7 @@ void TSAL_Mixer::listener_vel(float vel_x, float vel_y, float vel_z)
 	alwListenerfv(AL_VELOCITY,listenerVel);
 }
 
-void TSAL_Mixer::listener_facing(float front_x, float front_y, float front_z, float up_x, float up_y, float up_z)
+void TSAL_Manager::listener_facing(float front_x, float front_y, float front_z, float up_x, float up_y, float up_z)
 {
 	listenerOri[0] = front_x;
 	listenerOri[1] = front_y;
@@ -146,7 +146,7 @@ void TSAL_Mixer::listener_facing(float front_x, float front_y, float front_z, fl
 	alwListenerfv(AL_ORIENTATION,listenerOri);
 }
 
-void TSAL_Mixer::load_sound(string file, string name)
+void TSAL_Manager::load_sound(string file, string name)
 {
 	ALuint buffer;
 	alGenBuffers(1, &buffer);
@@ -190,7 +190,7 @@ void TSAL_Mixer::load_sound(string file, string name)
 	sounds.insert( pair<string,ALuint> (name, buffer) );
 }
 
-void TSAL_Mixer::play_global(string name, float loudness, float pitch)
+void TSAL_Manager::play_global(string name, float loudness, float pitch)
 {
 	int id_index = get_source(listenerPos[0], listenerPos[1], listenerPos[2]);
 	if (id_index == -1) return;
@@ -213,7 +213,7 @@ void TSAL_Mixer::play_global(string name, float loudness, float pitch)
 	alwSourcePlay(current);
 }
 
-void TSAL_Mixer::play_sound(string name, float x, float y, float z, float loudness, float pitch, float falloff)
+void TSAL_Manager::play_sound(string name, float x, float y, float z, float loudness, float pitch, float falloff)
 {
 	int id_index = get_source(x, y, z);
 	if (id_index == -1) return;
@@ -238,7 +238,7 @@ void TSAL_Mixer::play_sound(string name, float x, float y, float z, float loudne
 	alwSourcePlay(current);
 }
 
-void TSAL_Mixer::manage_source(TSAL_Priv_Source* src)
+void TSAL_Manager::manage_source(TSAL_Priv_Source* src)
 {
 	if (src->id_taken_away)
 	{
@@ -264,7 +264,7 @@ void TSAL_Mixer::manage_source(TSAL_Priv_Source* src)
 		
 		src->sample_changed = false;
 		
-		map<string,ALuint>::iterator snd = sounds.find(src->name);
+		map<string,ALuint>::iterator snd = sounds.find(src->sample);
 		if (snd == sounds.end()) return;
 	
 		alwSourcei(src->source_id, AL_BUFFER, (ALint)(snd->second));
@@ -314,12 +314,12 @@ void TSAL_Mixer::manage_source(TSAL_Priv_Source* src)
 	}
 }
 
-void TSAL_Mixer::register_source(TSAL_Priv_Source* src)
+void TSAL_Manager::register_source(TSAL_Priv_Source* src)
 {
 	virtual_sources.push_back(src);
 }
 
-void TSAL_Mixer::forget_source(TSAL_Priv_Source* src)
+void TSAL_Manager::forget_source(TSAL_Priv_Source* src)
 {
 	for (int i = 0; i < TSAL_NUM_SOURCES; i++)
 		if (reservations[i] == src)
@@ -337,7 +337,7 @@ void TSAL_Mixer::forget_source(TSAL_Priv_Source* src)
 		}
 }
 
-TSAL_Source TSAL_Mixer::create_source(std::string sample, float x, float y, float z)
+TSAL_Source TSAL_Manager::create_source(std::string sample, float x, float y, float z)
 {
 	TSAL_Priv_Source* src_priv = new TSAL_Priv_Source();
 	src_priv->mixer = this;
@@ -350,7 +350,7 @@ TSAL_Source TSAL_Mixer::create_source(std::string sample, float x, float y, floa
 	return src;
 }
 
-void TSAL_Mixer::manage_all_sources()
+void TSAL_Manager::manage_all_sources()
 {
 	list<TSAL_Priv_Source*>::iterator iter;
 	for (iter = virtual_sources.begin(); iter != virtual_sources.end(); ++iter)

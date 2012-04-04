@@ -11,7 +11,7 @@ class TSAL_Priv_Source;
 
 class TSAL_Source
 {
-	friend class TSAL_Mixer;
+	friend class TSAL_Manager;
 	
 	public:
 		TSAL_Source();
@@ -35,13 +35,13 @@ class TSAL_Source
 		TSAL_Source(TSAL_Priv_Source* ptr);
 };
 
-class TSAL_Mixer
+class TSAL_Manager
 {
 	friend class TSAL_Priv_Source;
 		
 	public:
-		TSAL_Mixer();
-		~TSAL_Mixer();
+		TSAL_Manager();
+		~TSAL_Manager();
 		void load_sound(std::string file, std::string name);
 		void play_global(std::string name, float loudness = 1, float pitch = 1);
 		void play_sound(std::string name, float x, float y, float z = 0, float loudness = 1, float pitch = 1, float falloff = 1);

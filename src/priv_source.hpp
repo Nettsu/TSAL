@@ -2,12 +2,12 @@
 #include <AL/alc.h>
 #include <string>
 
-class TSAL_Mixer;
+class TSAL_Manager;
 class TSAL_Source;
 
 class TSAL_Priv_Source
 {
-	friend class TSAL_Mixer;
+	friend class TSAL_Manager;
 	friend class TSAL_Source;
 	
 	public:
@@ -17,7 +17,7 @@ class TSAL_Priv_Source
 	private:
 		ALfloat pos[3];
 		ALfloat vel[3];
-		std::string name;
+		std::string sample;
 		ALuint source_id;
 		float loudness;
 		float pitch;
@@ -30,6 +30,6 @@ class TSAL_Priv_Source
 		bool offset_changed;
 		bool paused;
 		int playbacks;
-		TSAL_Mixer* mixer;
+		TSAL_Manager* mixer;
 		void take_id();
 };

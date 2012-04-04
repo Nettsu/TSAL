@@ -16,19 +16,6 @@ TSAL_Source::TSAL_Source()
 TSAL_Source::TSAL_Source(TSAL_Priv_Source* ptr)
 {
 	priv = ptr;
-	priv->pos[0] = priv->pos[1] = priv->pos[2] = 0;
-	priv->vel[0] = priv->vel[1] = priv->vel[2] = 0;
-	priv->name = "";
-	priv->loudness = 1;
-	priv->pitch = 1;
-	priv->falloff = 1;
-	priv->offset = 0;
-	priv->loop = false;
-	priv->playing = false;
-	priv->paused = false;
-	priv->id_taken_away = true;
-	priv->sample_changed = true;
-	priv->offset_changed = false;
 }
 
 void TSAL_Source::start()
@@ -50,14 +37,14 @@ void TSAL_Source::pause()
 
 string TSAL_Source::sample()
 {
-	return priv->name;
+	return priv->sample;
 }
 
 void TSAL_Source::set_sample(string n)
 {
-	if (n == priv->name) return;
+	if (n == priv->sample) return;
 	
-	priv->name = n;
+	priv->sample = n;
 	priv->sample_changed = true;
 }
 
