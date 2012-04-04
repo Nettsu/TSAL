@@ -1,26 +1,22 @@
-#include <map>
 #include <vector>
 #include <AL/alc.h>
 #include <vorbis/vorbisfile.h>
 #include "tsal.hpp"
+#include "priv_source.hpp"
 #include "oal_wrap.hpp"
 
 #define BUFFER_SIZE 32768     // 32 KB buffers
 
 using namespace std;
 
-TSAL_Mixer* TSAL_Mixer::instance = NULL;  
-  
-TSAL_Mixer* TSAL_Mixer::get_mixer()
-{
-	if (!instance)   // Only allow one instance of class to be generated.
-		instance = new TSAL_Mixer();
-
-	return instance;
-}
-
 TSAL_Mixer::~TSAL_Mixer()
 {	
+	list<TSAL_Priv_Source*>::iterator iter;
+	for (iter = virtual_sources.begin(); iter != virtual_sources.end(); ++iter)
+	{
+		delete (*iter);
+	}
+	
 	alwDeleteSources(TSAL_NUM_SOURCES, sources);
 	alcDestroyContext(context);
 	alcCloseDevice(device);
@@ -232,7 +228,7 @@ void TSAL_Mixer::play_sound(string name, float x, float y, float z, float loudne
 	alwSourcePlay(current);
 }
 
-void TSAL_Mixer::manage_source(TSAL_Source* src)
+void TSAL_Mixer::manage_source(TSAL_Priv_Source* src)
 {
 	if (src->id_taken_away)
 	{
@@ -308,12 +304,12 @@ void TSAL_Mixer::manage_source(TSAL_Source* src)
 	}
 }
 
-void TSAL_Mixer::register_source(TSAL_Source* src)
+void TSAL_Mixer::register_source(TSAL_Priv_Source* src)
 {
 	virtual_sources.push_back(src);
 }
 
-void TSAL_Mixer::forget_source(TSAL_Source* src)
+void TSAL_Mixer::forget_source(TSAL_Priv_Source* src)
 {
 	for (int i = 0; i < TSAL_NUM_SOURCES; i++)
 		if (reservations[i] == src)
@@ -322,7 +318,7 @@ void TSAL_Mixer::forget_source(TSAL_Source* src)
 			reservations[i] = NULL;
 			break;
 		}
-	list<TSAL_Source*>::iterator iter;
+	list<TSAL_Priv_Source*>::iterator iter;
 	for (iter = virtual_sources.begin(); iter != virtual_sources.end(); ++iter)
 		if (*iter == src) 
 		{
@@ -331,9 +327,18 @@ void TSAL_Mixer::forget_source(TSAL_Source* src)
 		}
 }
 
+TSAL_Source TSAL_Mixer::create_source()
+{
+	TSAL_Priv_Source* src_priv = new TSAL_Priv_Source();
+	src_priv->mixer = this;
+	register_source(src_priv);
+	TSAL_Source src(src_priv);
+	return src;
+}
+
 void TSAL_Mixer::manage_all_sources()
 {
-	list<TSAL_Source*>::iterator iter;
+	list<TSAL_Priv_Source*>::iterator iter;
 	for (iter = virtual_sources.begin(); iter != virtual_sources.end(); ++iter)
 	{
 		manage_source(*iter);

@@ -19,7 +19,7 @@ LDFLAGS = -O2 $(LIBPATH) -lrt -Wl,-soname,libtsal.so.0,--whole-archive \
 LDFLAGS_WIN = -O2 -L./dep/win32 -static-libgcc -static-libstdc++ -lsoft_oal \
 -Wl,--whole-archive -logg -lvorbis -lvorbisfile -Wl,--no-whole-archive -shared
 
-SOURCES = src/source.cpp src/mixer.cpp src/oal_wrap.cpp 
+SOURCES = src/source.cpp src/mixer.cpp src/oal_wrap.cpp src/priv_source.cpp
 
 NODIRSOURCES = $(notdir $(SOURCES))
 
@@ -46,4 +46,4 @@ src/%.win.o: src/%.cpp
 	$(CXX_WIN) $(CFLAGS_WIN) $(DBGFLAGS) $< -o $@
 
 clean:
-	$(RM) src/*.o lib/*
+	$(RM) src/*.o

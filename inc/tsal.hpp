@@ -7,15 +7,14 @@
 #define TSAL_NUM_BUFFERS 128
 #define TSAL_NUM_SOURCES 16
 
-class TSAL_Mixer;
+class TSAL_Priv_Source;
 
 class TSAL_Source
-{
+{		
 	friend class TSAL_Mixer;
-		
+	
 	public:
 		TSAL_Source();
-		TSAL_Source(std::string n, bool l);
 		~TSAL_Source();
 		void start();
 		void stop();
@@ -29,30 +28,17 @@ class TSAL_Source
 		std::string sample();
 		
 	private:
-		ALfloat pos[3];
-		ALfloat vel[3];
-		std::string name;
-		ALuint source_id;
-		float loudness;
-		float pitch;
-		float falloff;
-		float offset;
-		bool loop;
-		bool id_taken_away;
-		bool sample_changed;
-		bool playing;
-		bool offset_changed;
-		bool paused;
-		int playbacks;
-		void take_id();
+		TSAL_Priv_Source* priv;
+		TSAL_Source(TSAL_Priv_Source* ptr);
 };
 
 class TSAL_Mixer
 {
-	friend class TSAL_Source;
+	friend class TSAL_Priv_Source;
 		
 	public:
-		static TSAL_Mixer* get_mixer();
+		TSAL_Mixer();
+		~TSAL_Mixer();
 		void load_sound(std::string file, std::string name);
 		void play_global(std::string name, float loudness = 1, float pitch = 1);
 		void play_sound(std::string name, float x, float y, float z = 0, float loudness = 1, float pitch = 1, float falloff = 1);
@@ -61,6 +47,7 @@ class TSAL_Mixer
 		void listener_facing(float front_x, float front_y, float front_z, float up_x, float up_y, float up_z);
 		void set_volume(float v);
 		void manage_all_sources();
+		TSAL_Source create_source();
 		
 	private:
 		std::map <std::string, ALuint> sounds;
@@ -68,9 +55,9 @@ class TSAL_Mixer
 		ALfloat listenerVel[3];
 		ALfloat listenerOri[6];
 		
-		std::list<TSAL_Source*> virtual_sources;
+		std::list<TSAL_Priv_Source*> virtual_sources;
 		ALuint sources[TSAL_NUM_SOURCES];
-		TSAL_Source* reservations[TSAL_NUM_SOURCES];
+		TSAL_Priv_Source* reservations[TSAL_NUM_SOURCES];
 		
 		float global_volume;
 		float reference_dist;
@@ -80,11 +67,7 @@ class TSAL_Mixer
 		ALCcontext* context;
 		
 		int get_source(float x, float y, float z);
-		void manage_source(TSAL_Source* src);
-		void register_source(TSAL_Source* src);
-		void forget_source(TSAL_Source* src);
-		
-		TSAL_Mixer();
-		~TSAL_Mixer();
-		static TSAL_Mixer* instance;
+		void manage_source(TSAL_Priv_Source* src);
+		void register_source(TSAL_Priv_Source* src);
+		void forget_source(TSAL_Priv_Source* src);
 };

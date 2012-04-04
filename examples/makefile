@@ -1,6 +1,6 @@
 CXX = g++
 
-LDFLAGS = -I../inc -L. -Wl,-rpath=../ ../libtsal.so.0
+LDFLAGS = -g -I../inc -L. -Wl,-rpath=../ ../libtsal.so.0
 
 SOURCES = src/source.cpp src/global.cpp
 
