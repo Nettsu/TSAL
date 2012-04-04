@@ -10,7 +10,7 @@
 class TSAL_Priv_Source;
 
 class TSAL_Source
-{		
+{
 	friend class TSAL_Mixer;
 	
 	public:
@@ -19,11 +19,14 @@ class TSAL_Source
 		void start();
 		void stop();
 		void pause();
-		void update(float p, float loud, bool l);
+		void set_pitch(float p);
+		void set_loudness(float loud);
+		void set_loop(bool l);
 		void set_pos(float pos_x, float pos_y, float pos_z = 0);
 		void set_vel(float vel_x, float vel_y, float vel_z = 0);
 		void set_offset(float off);
-		void change_sample(std::string n);
+		void set_falloff(float f);
+		void set_sample(std::string n);
 		bool is_playing();
 		std::string sample();
 		
@@ -46,8 +49,10 @@ class TSAL_Mixer
 		void listener_vel(float vel_x, float vel_y, float vel_z = 0);
 		void listener_facing(float front_x, float front_y, float front_z, float up_x, float up_y, float up_z);
 		void set_volume(float v);
+		void set_ref_dist(float d);
+		void set_falloff(float f);
 		void manage_all_sources();
-		TSAL_Source create_source();
+		TSAL_Source create_source(std::string sample = "", float x = 0, float y = 0, float z = 0);
 		
 	private:
 		std::map <std::string, ALuint> sounds;

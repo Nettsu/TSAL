@@ -53,7 +53,7 @@ string TSAL_Source::sample()
 	return priv->name;
 }
 
-void TSAL_Source::change_sample(string n)
+void TSAL_Source::set_sample(string n)
 {
 	if (n == priv->name) return;
 	
@@ -61,11 +61,24 @@ void TSAL_Source::change_sample(string n)
 	priv->sample_changed = true;
 }
 
-void TSAL_Source::update(float p, float loud, bool l)
+void TSAL_Source::set_pitch(float p)
 {
-	if (p == p)	priv->pitch = p;
+	priv->pitch = p;
+}
+
+void TSAL_Source::set_loudness(float loud)
+{
 	priv->loudness = loud;
+}
+
+void TSAL_Source::set_loop(bool l)
+{
 	priv->loop = l;
+}
+
+void TSAL_Source::set_falloff(float f)
+{
+	priv->falloff = f;
 }
 
 void TSAL_Source::set_pos(float pos_x, float pos_y, float pos_z)

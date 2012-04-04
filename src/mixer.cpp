@@ -56,6 +56,16 @@ TSAL_Mixer::TSAL_Mixer()
 		reservations[i] = NULL;
 }
 
+void TSAL_Mixer::set_ref_dist(float d)
+{
+	reference_dist = d;
+}
+
+void TSAL_Mixer::set_falloff(float f)
+{
+	falloff_mult = f;
+}
+
 void TSAL_Mixer::set_volume(float v)
 {
 	global_volume = v;
@@ -327,10 +337,14 @@ void TSAL_Mixer::forget_source(TSAL_Priv_Source* src)
 		}
 }
 
-TSAL_Source TSAL_Mixer::create_source()
+TSAL_Source TSAL_Mixer::create_source(std::string sample, float x, float y, float z)
 {
 	TSAL_Priv_Source* src_priv = new TSAL_Priv_Source();
 	src_priv->mixer = this;
+	src_priv->sample = sample;
+	src_priv->pos[0] = x;
+	src_priv->pos[1] = y;
+	src_priv->pos[2] = z;
 	register_source(src_priv);
 	TSAL_Source src(src_priv);
 	return src;
