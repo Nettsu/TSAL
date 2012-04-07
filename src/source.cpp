@@ -5,12 +5,18 @@ using namespace std;
 
 TSAL_Source::~TSAL_Source()
 {
-	delete priv;
+	if (priv != NULL)
+	{
+		if (priv->reference_counter > 0)
+			priv->reference_counter--;
+		if (priv->reference_counter == 0)
+			delete priv;
+	}
 }
 
 TSAL_Source::TSAL_Source()
 {
-	
+	priv = NULL;
 }
 
 TSAL_Source::TSAL_Source(TSAL_Priv_Source* ptr)

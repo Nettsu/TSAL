@@ -345,6 +345,7 @@ TSAL_Source TSAL_Manager::create_source(std::string sample, float x, float y, fl
 	src_priv->pos[0] = x;
 	src_priv->pos[1] = y;
 	src_priv->pos[2] = z;
+	src_priv->reference_counter = 2;
 	register_source(src_priv);
 	TSAL_Source src(src_priv);
 	return src;

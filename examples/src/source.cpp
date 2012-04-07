@@ -9,6 +9,8 @@ int main()
   
   // Utworz wirtualne źródło dźwięku i nadaj mu początkową pozycję
   TSAL_Source source = manager.create_source("sound", 100.0f, 0.0f, 0.0f);
+  
+  // Niech dźwięk źródła będzie odtwarzany w pętli
   source.set_loop(true);
 	
   // Nadaj pozycję i kierunek wirtualnemu słuchaczowi

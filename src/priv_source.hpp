@@ -30,6 +30,7 @@ class TSAL_Priv_Source
 		bool offset_changed;
 		bool paused;
 		int playbacks;
+		unsigned int reference_counter;
 		TSAL_Manager* mixer;
 		void take_id();
 };
