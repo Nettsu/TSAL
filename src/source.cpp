@@ -22,6 +22,16 @@ TSAL_Source::TSAL_Source()
 TSAL_Source::TSAL_Source(TSAL_Priv_Source* ptr)
 {
 	priv = ptr;
+	priv->reference_counter++;
+}
+
+TSAL_Source& TSAL_Source::operator=(const TSAL_Source& source)
+{
+	priv = source.priv;
+	if (priv != NULL)
+		priv->reference_counter++;
+	
+	return *this;
 }
 
 void TSAL_Source::start()

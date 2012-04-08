@@ -321,6 +321,7 @@ void TSAL_Manager::register_source(TSAL_Priv_Source* src)
 
 void TSAL_Manager::forget_source(TSAL_Priv_Source* src)
 {
+	src->mixer = NULL;
 	for (int i = 0; i < TSAL_NUM_SOURCES; i++)
 		if (reservations[i] == src)
 		{
@@ -339,13 +340,11 @@ void TSAL_Manager::forget_source(TSAL_Priv_Source* src)
 
 TSAL_Source TSAL_Manager::create_source(std::string sample, float x, float y, float z)
 {
-	TSAL_Priv_Source* src_priv = new TSAL_Priv_Source();
-	src_priv->mixer = this;
+	TSAL_Priv_Source* src_priv = new TSAL_Priv_Source(this);
 	src_priv->sample = sample;
 	src_priv->pos[0] = x;
 	src_priv->pos[1] = y;
 	src_priv->pos[2] = z;
-	src_priv->reference_counter = 2;
 	register_source(src_priv);
 	TSAL_Source src(src_priv);
 	return src;

@@ -11,7 +11,7 @@ class TSAL_Priv_Source
 	friend class TSAL_Source;
 	
 	public:
-		TSAL_Priv_Source();
+		TSAL_Priv_Source(TSAL_Manager* mgr);
 		~TSAL_Priv_Source();
 		
 	private:

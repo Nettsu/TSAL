@@ -3,11 +3,13 @@
 
 TSAL_Priv_Source::~TSAL_Priv_Source()
 {
-	mixer->forget_source(this);
+	if (mixer != NULL)
+		mixer->forget_source(this);
 }
 
-TSAL_Priv_Source::TSAL_Priv_Source()
+TSAL_Priv_Source::TSAL_Priv_Source(TSAL_Manager* mgr)
 {
+	mixer = mgr;
 	reference_counter = 0;
 	pos[0] = pos[1] = pos[2] = 0;
 	vel[0] = vel[1] = vel[2] = 0;
