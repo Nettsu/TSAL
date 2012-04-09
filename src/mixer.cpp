@@ -11,12 +11,6 @@ using namespace std;
 
 TSAL_Manager::~TSAL_Manager()
 {	
-	list<TSAL_Priv_Source*>::iterator iter;
-	for (iter = virtual_sources.begin(); iter != virtual_sources.end(); ++iter)
-	{
-		delete (*iter);
-	}
-	
 	alwDeleteSources(TSAL_NUM_SOURCES, sources);
 	alcDestroyContext(context);
 	alcCloseDevice(device);
@@ -346,8 +340,7 @@ TSAL_Source TSAL_Manager::create_source(std::string sample, float x, float y, fl
 	src_priv->pos[1] = y;
 	src_priv->pos[2] = z;
 	register_source(src_priv);
-	TSAL_Source src(src_priv);
-	return src;
+	return TSAL_Source(src_priv);
 }
 
 void TSAL_Manager::manage_all_sources()

@@ -25,12 +25,29 @@ TSAL_Source::TSAL_Source(TSAL_Priv_Source* ptr)
 	priv->reference_counter++;
 }
 
-TSAL_Source& TSAL_Source::operator=(const TSAL_Source& source)
+TSAL_Source::TSAL_Source(const TSAL_Source& source)
 {
 	priv = source.priv;
 	if (priv != NULL)
 		priv->reference_counter++;
-	
+}
+
+TSAL_Source& TSAL_Source::operator=(const TSAL_Source& source)
+{
+	if (priv != source.priv)
+	{
+		if (priv != NULL)
+		{
+			if (priv->reference_counter > 0)
+				priv->reference_counter--;
+			if (priv->reference_counter == 0)
+				delete priv;
+		}
+
+		priv = source.priv;
+		if (priv != NULL)
+			priv->reference_counter++;
+	}
 	return *this;
 }
 

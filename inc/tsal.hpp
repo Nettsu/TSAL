@@ -16,6 +16,7 @@ class TSAL_Source
 	public:
 		TSAL_Source();
 		~TSAL_Source();
+		TSAL_Source(const TSAL_Source& source);
 		TSAL_Source& operator=(const TSAL_Source& source);
 		void start();
 		void stop();
