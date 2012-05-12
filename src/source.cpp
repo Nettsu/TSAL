@@ -60,6 +60,7 @@ void TSAL_Source::start()
 void TSAL_Source::stop()
 {
 	priv->playing = false;
+	priv->sample_changed = true;
 }
 
 void TSAL_Source::pause()
