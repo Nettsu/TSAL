@@ -1,0 +1,29 @@
+TSAL to biblioteka opakowująca OpenAL w interfejs w języku C++, naprawiająca
+wiele problemów oryginalnej biblioteki, zapewniająca dodatkowy poziom
+abstrakcji i dodająca wsparcie dla formatu dźwiękowego ogg.
+
+Aby zbudować bibliotekę do dynamicznego podłączania dla systemu Linuks 32bit
+wywołaj:
+
+	make
+	
+Dla systemu Linuks 64bit wywołaj:
+
+	make ARCH=64
+	
+Aby skompilować pod systemem Windows używając MinGW wywołaj:
+
+	make win32
+	
+Aby skompilować bibliotekę używając MinGW może byc potrzebne dokonanie
+drobnych zmian w pliku makefile.
+
+Biblioteki OpenAL, Vorbis, Vorbisfile i Ogg, z których korzysta TSAL są
+dołączone w katalogu 'dep' i włączane statycznie do wynikowej biblioteki.
+
+Katalogi:
+
+./dep         zawiera statycznie dołączane zależności biblioteki
+./inc         interfejs programistyczny biblioteki
+./src         źródła biblioteki TSAL
+./examples    zawiera plik makefile i źródła dla kilku przykladowych aplikacji

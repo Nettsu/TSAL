@@ -46,15 +46,18 @@ class TSAL_Manager
 		~TSAL_Manager();
 		void load_sound(std::string file, std::string name);
 		void play_global(std::string name, float loudness = 1, float pitch = 1);
-		void play_sound(std::string name, float x, float y, float z = 0, float loudness = 1, float pitch = 1, float falloff = 1);
+		void play_sound(std::string name, float x, float y, float z = 0, 
+			float loudness = 1, float pitch = 1, float falloff = 1);
 		void listener_pos(float pos_x, float pos_y, float pos_z = 0);
 		void listener_vel(float vel_x, float vel_y, float vel_z = 0);
-		void listener_facing(float front_x, float front_y, float front_z, float up_x, float up_y, float up_z);
+		void listener_facing(float front_x, float front_y, float front_z, 
+			float up_x, float up_y, float up_z);
 		void set_volume(float v);
 		void set_ref_dist(float d);
 		void set_falloff(float f);
 		void manage_all_sources();
-		TSAL_Source create_source(std::string sample = "", float x = 0, float y = 0, float z = 0);
+		TSAL_Source create_source(std::string sample = "", float x = 0, float y = 0,
+			float z = 0);
 		
 	private:
 		std::map <std::string, ALuint> sounds;

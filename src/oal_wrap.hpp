@@ -16,7 +16,8 @@ void alwGenBuffers(ALsizei n, ALuint *buffers);
 
 void alwDeleteBuffers(ALsizei n, ALuint *buffers);
 
-void alwBufferData(ALuint buffer, ALenum format, const ALvoid *data, ALsizei size, ALsizei freq);
+void alwBufferData(ALuint buffer, ALenum format, const ALvoid *data, 
+  ALsizei size, ALsizei freq);
 
 bool alwIsSource(ALuint source);
 
@@ -26,7 +27,8 @@ void alwGetSourcefv(ALuint source, ALenum param, ALfloat *values);
 
 void alwSourcef(ALuint source, ALenum param, ALfloat value);
 
-void alwSource3f(ALuint source, ALenum param, ALfloat v1, ALfloat v2, ALfloat v3);
+void alwSource3f(ALuint source, ALenum param, ALfloat v1, ALfloat v2, 
+  ALfloat v3);
 
 void alwSourcefv(ALuint source, ALenum param, ALfloat* values);
 

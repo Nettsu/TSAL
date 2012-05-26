@@ -128,7 +128,8 @@ void TSAL_Manager::listener_vel(float vel_x, float vel_y, float vel_z)
 	alwListenerfv(AL_VELOCITY,listenerVel);
 }
 
-void TSAL_Manager::listener_facing(float front_x, float front_y, float front_z, float up_x, float up_y, float up_z)
+void TSAL_Manager::listener_facing(float front_x, float front_y, float front_z,
+	float up_x, float up_y, float up_z)
 {
 	listenerOri[0] = front_x;
 	listenerOri[1] = front_y;
@@ -178,7 +179,8 @@ void TSAL_Manager::load_sound(string file, string name)
   }
   while (bytes > 0);
 
-	alwBufferData(buffer, format, &bufferData[0], static_cast < ALsizei > (bufferData.size()), pInfo->rate);
+	alwBufferData(buffer, format, &bufferData[0], 
+		static_cast < ALsizei > (bufferData.size()), pInfo->rate);
 	
 	ov_clear(&oggFile);
 	sounds.insert( pair<string,ALuint> (name, buffer) );
@@ -207,7 +209,8 @@ void TSAL_Manager::play_global(string name, float loudness, float pitch)
 	alwSourcePlay(current);
 }
 
-void TSAL_Manager::play_sound(string name, float x, float y, float z, float loudness, float pitch, float falloff)
+void TSAL_Manager::play_sound(string name, float x, float y, float z, 
+	float loudness, float pitch, float falloff)
 {
 	int id_index = get_source(x, y, z);
 	if (id_index == -1) return;
@@ -332,7 +335,8 @@ void TSAL_Manager::forget_source(TSAL_Priv_Source* src)
 		}
 }
 
-TSAL_Source TSAL_Manager::create_source(std::string sample, float x, float y, float z)
+TSAL_Source TSAL_Manager::create_source(std::string sample, float x, float y, 
+	float z)
 {
 	TSAL_Priv_Source* src_priv = new TSAL_Priv_Source(this);
 	src_priv->sample = sample;

@@ -87,14 +87,17 @@ void alwDeleteBuffers(ALsizei n, ALuint* buffers)
 		printf("After alDeleteBuffers %i : %s\n", n, ErrStr(error).c_str());
 }
 
-void alwBufferData(ALuint buffer, ALenum format, const ALvoid *data, ALsizei size, ALsizei freq)
+void alwBufferData(ALuint buffer, ALenum format, const ALvoid *data, 
+	ALsizei size, ALsizei freq)
 {
 	int error;
 	if ((error = alGetError()) != AL_NO_ERROR)
-		printf("Before alBufferData %i %i : %s\n", buffer, size, ErrStr(error).c_str());
+		printf("Before alBufferData %i %i : %s\n", buffer, size, 
+			ErrStr(error).c_str());
 	alBufferData(buffer, format, data, size, freq);
 	if ((error = alGetError()) != AL_NO_ERROR)
-		printf("After alBufferData %i %i : %s\n", buffer, size, ErrStr(error).c_str());
+		printf("After alBufferData %i %i : %s\n", buffer, size, 
+			ErrStr(error).c_str());
 }
 
 bool alwIsSource(ALuint source)
@@ -132,20 +135,24 @@ void alwSourcef(ALuint source, ALenum param, ALfloat value)
 {
 	int error;
 	if ((error = alGetError()) != AL_NO_ERROR)
-		printf("Before alSourcef %i %f : %s\n", param, value, ErrStr(error).c_str());
+		printf("Before alSourcef %i %f : %s\n", param, value, 
+			ErrStr(error).c_str());
 	alSourcef(source, param, value);
 	if ((error = alGetError()) != AL_NO_ERROR)
 		printf("After alSourcef %i %f : %s\n", param, value, ErrStr(error).c_str());
 }
 
-void alwSource3f(ALuint source, ALenum param, ALfloat v1, ALfloat v2, ALfloat v3)
+void alwSource3f(ALuint source, ALenum param, ALfloat v1, ALfloat v2, 
+	ALfloat v3)
 {
 	int error;
 	if ((error = alGetError()) != AL_NO_ERROR)
-		printf("Before alSource3f %i %f %f %f : %s\n", param, v1, v2, v3, ErrStr(error).c_str());
+		printf("Before alSource3f %i %f %f %f : %s\n", param, v1, v2, v3, 
+			ErrStr(error).c_str());
 	alSource3f(source, param, v1, v2, v3);
 	if ((error = alGetError()) != AL_NO_ERROR)
-		printf("After alSource3f %i %f %f %f: %s\n", param, v1, v2, v3, ErrStr(error).c_str());
+		printf("After alSource3f %i %f %f %f: %s\n", param, v1, v2, v3, 
+			ErrStr(error).c_str());
 }
 
 void alwSourcefv(ALuint source, ALenum param, ALfloat *values)
@@ -162,7 +169,8 @@ void alwSourcei(ALuint source, ALenum param, ALint value)
 {
 	int error;
 	if ((error = alGetError()) != AL_NO_ERROR)
-		printf("Before alSourcei %i %i : %s\n", param, value, ErrStr(error).c_str());
+		printf("Before alSourcei %i %i : %s\n", param, value, 
+			ErrStr(error).c_str());
 	alSourcei(source, param, value);
 	if ((error = alGetError()) != AL_NO_ERROR)
 		printf("After alSourcei %i %i : %s\n", param, value, ErrStr(error).c_str());

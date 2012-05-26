@@ -22,8 +22,8 @@ int main()
 	
   for (int i = 0; i <= 10; i++)
   {
-		// Funkcja zarządzająca źródłami, powinna być wykonywana regularnie
-		manager.manage_all_sources();
+    // Funkcja zarządzająca źródłami, powinna być wykonywana regularnie
+    manager.manage_all_sources();
     // Przesuń wirtualne źródło wzdłuż osi OX i poczekaj pół sekundy
     source.set_pos(100.0f - i*20.0f, 0.0f, 0.0f);
     usleep(500000);
