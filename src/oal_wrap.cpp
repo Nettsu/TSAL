@@ -1,30 +1,41 @@
+/* 
+ * This file is part of the TSAL library source code.
+ * Use, distribution and reproduction of this library source is
+ * governed by a BSD-style source license included with this source
+ * in 'COPYING'. Please read these terms before distributing.
+ * 
+ * The TSAL source code is (C) COPYRIGHT 2012
+ * by Marcin Pawłowski
+ *
+ */
+
 #include "oal_wrap.hpp"
 
 using namespace std;
 
 string ErrStr(ALenum err)
 {
-    switch(err)
-    {
-        case AL_NO_ERROR:
-            return string("AL_NO_ERROR");
+	switch(err)
+	{
+		case AL_NO_ERROR:
+			return string("AL_NO_ERROR");
 
-        case AL_INVALID_NAME:
-            return string("AL_INVALID_NAME");
+		case AL_INVALID_NAME:
+			return string("AL_INVALID_NAME");
 
-        case AL_INVALID_ENUM:
-            return string("AL_INVALID_ENUM");
+		case AL_INVALID_ENUM:
+			return string("AL_INVALID_ENUM");
 
-        case AL_INVALID_VALUE:
-            return string("AL_INVALID_VALUE");
+		case AL_INVALID_VALUE:
+			return string("AL_INVALID_VALUE");
 
-        case AL_INVALID_OPERATION:
-            return string("AL_INVALID_OPERATION");
+		case AL_INVALID_OPERATION:
+			return string("AL_INVALID_OPERATION");
 
-        case AL_OUT_OF_MEMORY:
-            return string("AL_OUT_OF_MEMORY");
-    };
-    return "Unknown OpenAL error!";
+		case AL_OUT_OF_MEMORY:
+			return string("AL_OUT_OF_MEMORY");
+	};
+	return "Unknown OpenAL error!";
 }
 
 void alwListenerfv(ALenum param, ALfloat* values)

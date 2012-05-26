@@ -1,3 +1,14 @@
+/* 
+ * This file is part of the TSAL library source code.
+ * Use, distribution and reproduction of this library source is
+ * governed by a BSD-style source license included with this source
+ * in 'COPYING'. Please read these terms before distributing.
+ * 
+ * The TSAL source code is (C) COPYRIGHT 2012
+ * by Marcin Pawłowski
+ *
+ */
+
 #include <vector>
 #include <AL/alc.h>
 #include <vorbis/vorbisfile.h>
