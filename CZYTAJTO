@@ -30,7 +30,8 @@ Aby skompilować bibliotekę używając MinGW może byc potrzebne dokonanie
 drobnych zmian w pliku makefile.
 
 Biblioteki OpenAL, Vorbis, Vorbisfile i Ogg, z których korzysta TSAL są
-dołączone w katalogu 'dep' i włączane statycznie do wynikowej biblioteki.
+dołączone w katalogu 'dep' (wraz ze swoimi licencjami) i włączane statycznie
+ do wynikowej biblioteki.
 
 Katalogi:
 
